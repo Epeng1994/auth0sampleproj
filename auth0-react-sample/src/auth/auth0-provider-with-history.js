@@ -9,7 +9,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
   const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
-
+  //importing .env variables to be used 
   const onRedirectCallback = (appState) => {
     history.push(appState?.returnTo || window.location.pathname);
   };
@@ -26,5 +26,5 @@ const Auth0ProviderWithHistory = ({ children }) => {
     </Auth0Provider>
   );
 };
-
+  //wrapper on src/index.js around app to be used as a provider, using the domain/clientId/audience id from auth0
 export default Auth0ProviderWithHistory;
