@@ -1,21 +1,21 @@
-// src/views/external-api.js
-
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios'
 
 const ExternalApi = () => {
   const [message, setMessage] = useState('');
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0(); //allows auth0 to check for authentication without user logging in again
 
   const callApi = async () => {
     try {
-      const response = await fetch(`${serverUrl}/api/messages/public-message`);
-
-      const responseData = await response.json();
-
-      setMessage(responseData.message);
+      axios.get(`${serverUrl}/api/messages/public-message`)
+      .then(res=>{
+        setMessage(res.data.message);
+      })
+      .catch(err=>{
+        setMessage(err);
+      })
     } catch (error) {
       setMessage(error.message);
     }
@@ -24,19 +24,13 @@ const ExternalApi = () => {
   const callSecureApi = async () => {
     try {
       const token = await getAccessTokenSilently();
-      
-      const response = await fetch(
-        `${serverUrl}/api/messages/protected-message`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      const responseData = await response.json();
-
-      setMessage(responseData.message);
+      axios.get(`${serverUrl}/api/messages/protected-message`, {headers:{Authorization: `Bearer ${token}`}})
+      .then(res=>{
+        setMessage(res.data.message);
+      })
+      .catch(err=>{
+        setMessage(err);
+      })
     } catch (error) {
       setMessage(error.message);
     }

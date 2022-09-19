@@ -1,10 +1,12 @@
-// src/auth/protected-route.js
-
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { Loading } from '../components/index';
-//allows for page to redirect to an in-between page while it is rendering, in this case it is a Loading component with an animation, if authentication failed, will direct to login/signup page
+
+//Employs withAutenticationRequired hook from auth0 that checks if request is authenticated if not, will redirect to login page
+//can use onRedirecting as second argument to show a temporary loading component while page generates
+//use as template to generate protected routes
+
 const ProtectedRoute = ({ component, ...args }) => (
   <Route
     component={withAuthenticationRequired(component, {
